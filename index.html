@@ -1,0 +1,583 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoCycle E-Waste Management</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="welcome-screen active-screen">
+        <div class="welcome-card login-card active-card" id="loginCard">
+            <h2>Login to EcoCycle</h2>
+            <form id="loginForm">
+                <input type="text" id="loginUsername" placeholder="Username" required>
+                <input type="password" id="loginPassword" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <p class="message-area" id="loginMessage"></p>
+            <p>Don't have an account? <a href="#" id="switchToRegister">Register here</a></p>
+        </div>
+
+        <div class="welcome-card register-card" id="registerCard">
+            <h2>Join EcoCycle Today!</h2>
+            <form id="registerForm">
+                <input type="text" id="registerUsername" placeholder="Username" required>
+                <input type="password" id="registerPassword" placeholder="Password" required>
+                <button type="submit">Register</button>
+            </form>
+            <p class="message-area" id="registerMessage"></p>
+            <p>Already have an account? <a href="#" id="switchToLogin">Login here</a></p>
+        </div>
+    </div>
+
+    <div class="app-container hidden-app-container">
+        <header>
+            <div class="logo">EcoCycle</div>
+            <nav>
+                <ul>
+                    <li><button id="navHome" class="active">Home</button></li>
+                    <li><button id="navClassify">Classify & Recycle</button></li>
+                    <li><button id="navLocations">Recycling Locations</button></li>
+                    <li><button id="navEducation">Education</button></li>
+                    <li><button id="navLogout">Logout</button></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <section id="homeSection" class="content-section active">
+                <h1>Welcome to EcoCycle!</h1>
+                <p>Your one-stop solution for responsible e-waste management in Hyderabad.</p>
+                <div class="hero-image">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/81e947b3-07c0-437c-a679-5d64bfef82f9.png" 
+                         alt="Electronic waste recycling illustration" 
+                         class="hero-img" 
+                         style="width:100%; max-height:400px; object-fit:cover; border-radius:8px; box-shadow:0 4px 8px rgba(0,0,0,0.1)" />
+                </div>
+                <h3>Why Recycle E-Waste?</h3>
+                <ul>
+                    <li><strong>Protect the Environment:</strong> Prevents harmful chemicals from leaching into soil and water.</li>
+                    <li><strong>Conserve Natural Resources:</strong> Recovers valuable materials like gold, silver, copper, and platinum.</li>
+                    <li><strong>Reduce Landfill Waste:</strong> Frees up landfill space and minimizes pollution.</li>
+                    <li><strong>Create Green Jobs:</strong> Supports the recycling industry and a circular economy.</li>
+                </ul>
+                <button class="call-to-action" id="exploreClassifyButton">Start Classifying Your E-Waste</button>
+            </section>
+
+            <section id="classifySection" class="content-section">
+                <h1>Classify Your E-Waste</h1>
+                <form id="classifyForm">
+                    <div class="form-group">
+                        <label for="deviceType">Device Type:</label>
+                        <select id="deviceType" required>
+                            <option value="">Select Device</option>
+                            <option value="Smartphone">Smartphone</option>
+                            <option value="Laptop">Laptop</option>
+                            <option value="Tablet">Tablet</option>
+                            <option value="Desktop">Desktop</option>
+                            <option value="Monitor">Monitor</option>
+                            <option value="TV">TV</option>
+                            <option value="Printer">Printer</option>
+                            <option value="Battery">Battery</option>
+                            <option value="Cable">Cable</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="deviceCondition">Condition:</label>
+                        <select id="deviceCondition" required>
+                            <option value="">Select Condition</option>
+                            <option value="Working">Working</option>
+                            <option value="Partially Working">Partially Working</option>
+                            <option value="Not Working">Not Working</option>
+                        </select>
+                    </div>
+                    <button type="submit">Get Recommendation</button>
+                </form>
+                <div id="classificationResult" class="result-box hidden">
+                    <h3>Your E-Waste Classification:</h3>
+                    <p id="resultDevice"></p>
+                    <p id="resultCondition"></p>
+                    <p id="resultMessage"></p>
+                    <p id="resultRecommendation"></p>
+                </div>
+                <p class="message-area" id="classifyMessage"></p>
+            </section>
+
+            <section id="locationsSection" class="content-section">
+                <h1>Recycling Locations in Hyderabad</h1>
+                <div class="filter-group">
+                    <label for="locationFilterDevice">Filter by Device Type:</label>
+                    <select id="locationFilterDevice">
+                        <option value="All">All Devices</option>
+                        <option value="Smartphone">Smartphone</option>
+                        <option value="Laptop">Laptop</option>
+                        <option value="Tablet">Tablet</option>
+                        <option value="Desktop">Desktop</option>
+                        <option value="Monitor">Monitor</option>
+                        <option value="TV">TV</option>
+                        <option value="Printer">Printer</option>
+                        <option value="Battery">Battery</option>
+                        <option value="Cable">Cable</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <button id="applyLocationFilter">Apply Filter</button>
+                </div>
+                <div id="locationsList" class="cards-container location-cards">
+                    <p class="loading-text">Loading recycling locations...</p>
+                </div>
+                <p class="message-area" id="locationsMessage"></p>
+            </section>
+
+            <section id="educationSection" class="content-section">
+                <h1>E-Waste Education & Guides</h1>
+                <div id="educationGuidesList" class="cards-container">
+                    <p class="loading-text">Loading education guides...</p>
+                </div>
+                <p class="message-area" id="educationMessage"></p>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 EcoCycle. All rights reserved. | Developed in Hyderabad, Telangana, India</p>
+        </footer>
+    </div>
+
+    <div id="educationModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <img id="modalImage" src="" alt="" class="modal-image">
+            <p id="modalDescription"></p>
+            <p id="modalFullContent"></p>
+        </div>
+    </div>
+
+    <script>
+        // API Base URL
+        const API_BASE_URL = 'http://localhost:5000/api';
+
+        // --- DOM Elements ---
+        const welcomeScreen = document.querySelector('.welcome-screen');
+        const loginCard = document.getElementById('loginCard');
+        const registerCard = document.getElementById('registerCard');
+        const switchToRegister = document.getElementById('switchToRegister');
+        const switchToLogin = document.getElementById('switchToLogin');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const loginMessage = document.getElementById('loginMessage');
+        const registerMessage = document.getElementById('registerMessage');
+
+        const appContainer = document.querySelector('.app-container');
+        const navButtons = document.querySelectorAll('nav button');
+        const sections = document.querySelectorAll('.content-section');
+
+        const navHome = document.getElementById('navHome');
+        const navClassify = document.getElementById('navClassify');
+        const navLocations = document.getElementById('navLocations');
+        const navEducation = document.getElementById('navEducation');
+        const navLogout = document.getElementById('navLogout');
+
+        const homeSection = document.getElementById('homeSection');
+        const classifySection = document.getElementById('classifySection');
+        const locationsSection = document.getElementById('locationsSection');
+        const educationSection = document.getElementById('educationSection');
+
+        const classifyForm = document.getElementById('classifyForm');
+        const deviceTypeSelect = document.getElementById('deviceType');
+        const deviceConditionSelect = document.getElementById('deviceCondition');
+        const classificationResultDiv = document.getElementById('classificationResult');
+        const resultDevice = document.getElementById('resultDevice');
+        const resultCondition = document.getElementById('resultCondition');
+        const resultMessage = document.getElementById('resultMessage');
+        const resultRecommendation = document.getElementById('resultRecommendation');
+        const classifyMessage = document.getElementById('classifyMessage');
+        const exploreClassifyButton = document.getElementById('exploreClassifyButton');
+
+        const locationsList = document.getElementById('locationsList');
+        const locationsMessage = document.getElementById('locationsMessage');
+        const locationFilterDevice = document.getElementById('locationFilterDevice');
+        const applyLocationFilter = document.getElementById('applyLocationFilter');
+
+        const educationGuidesList = document.getElementById('educationGuidesList');
+        const educationMessage = document.getElementById('educationMessage');
+
+        // Modal elements
+        const modal = document.getElementById('educationModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalImage = document.getElementById('modalImage');
+        const modalDescription = document.getElementById('modalDescription');
+        const modalFullContent = document.getElementById('modalFullContent');
+        const closeButton = document.querySelector('.close-button');
+
+        // --- Helper Functions ---
+        function showMessage(element, message, type = 'error') {
+            element.textContent = message;
+            element.className = 'message-area ' + type;
+            element.style.display = 'block';
+            setTimeout(() => {
+                element.style.display = 'none';
+                element.textContent = '';
+            }, 5000);
+        }
+
+        function showSection(sectionToShow) {
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            sectionToShow.classList.add('active');
+
+            navButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            if (sectionToShow === homeSection) navHome.classList.add('active');
+            else if (sectionToShow === classifySection) navClassify.classList.add('active');
+            else if (sectionToShow === locationsSection) navLocations.classList.add('active');
+            else if (sectionToShow === educationSection) navEducation.classList.add('active');
+        }
+
+        async function fetchWithAuth(url, options = {}) {
+            const token = localStorage.getItem('authToken');
+            const headers = {
+                'Content-Type': 'application/json',
+                ...options.headers
+            };
+
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+
+            options.headers = headers;
+
+            try {
+                const response = await fetch(url, options);
+
+                if (response.status === 401 || response.status === 403) {
+                    logoutUser();
+                    throw new Error('Unauthorized');
+                }
+
+                return response;
+            } catch (error) {
+                console.error('Fetch error:', error);
+                if (error.message === 'Failed to fetch') {
+                    showMessage(document.body.querySelector('.message-area') || loginMessage, 
+                               'Network error. Please check if the server is running.', 'error');
+                }
+                throw error;
+            }
+        }
+
+        function updateAuthUI() {
+            const token = localStorage.getItem('authToken');
+            if (token) {
+                const currentActiveCard = document.querySelector('.welcome-card.active-card');
+                if (currentActiveCard) {
+                    currentActiveCard.classList.add('slide-out-right');
+                }
+
+                welcomeScreen.classList.add('logged-in-active');
+
+                setTimeout(() => {
+                    welcomeScreen.classList.remove('active-screen');
+                    welcomeScreen.style.display = 'none';
+
+                    appContainer.classList.remove('hidden-app-container');
+                    
+                    if (currentActiveCard) {
+                        currentActiveCard.classList.remove('slide-out-right');
+                        currentActiveCard.classList.remove('active-card');
+                    }
+                    welcomeScreen.classList.remove('logged-in-active');
+                    showSection(homeSection);
+                }, 1300); // Adjusted for better timing
+            } else {
+                welcomeScreen.classList.add('active-screen');
+                welcomeScreen.classList.remove('logged-in-active');
+                appContainer.classList.add('hidden-app-container');
+                welcomeScreen.style.display = 'flex';
+                loginCard.classList.add('active-card');
+                registerCard.classList.remove('active-card');
+            }
+        }
+
+        function logoutUser() {
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('username');
+            updateAuthUI();
+            showMessage(loginMessage, 'You have been logged out.', 'success');
+        }
+
+        // Modal functions
+        function openModal(title, imageUrl, description, fullContent) {
+            modalTitle.textContent = title;
+            modalImage.src = imageUrl;
+            modalImage.alt = title;
+            modalDescription.textContent = description;
+            modalFullContent.textContent = fullContent;
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // --- Event Listeners ---
+        switchToRegister.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginCard.classList.remove('active-card');
+            registerCard.classList.add('active-card');
+            loginMessage.textContent = '';
+            registerMessage.textContent = '';
+            loginForm.reset();
+            registerForm.reset();
+        });
+
+        switchToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            registerCard.classList.remove('active-card');
+            loginCard.classList.add('active-card');
+            loginMessage.textContent = '';
+            registerMessage.textContent = '';
+            loginForm.reset();
+            registerForm.reset();
+        });
+
+        // Login Form Submission
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = loginUsername.value;
+            const password = loginPassword.value;
+
+            try {
+                const response = await fetchWithAuth(`${API_BASE_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    localStorage.setItem('authToken', data.token);
+                    localStorage.setItem('username', data.username);
+                    showMessage(loginMessage, data.message, 'success');
+                    updateAuthUI();
+                } else {
+                    showMessage(loginMessage, data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                if (!loginMessage.textContent) {
+                    showMessage(loginMessage, 'An unexpected error occurred during login.', 'error');
+                }
+            }
+        });
+
+        // Register Form Submission
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = registerUsername.value;
+            const password = registerPassword.value;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    showMessage(registerMessage, data.message, 'success');
+                    registerForm.reset();
+                    setTimeout(() => {
+                        switchToLogin.click();
+                    }, 2000);
+                } else {
+                    showMessage(registerMessage, data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                showMessage(registerMessage, 'Failed to register. Please try again.', 'error');
+            }
+        });
+
+        // Navigation
+        navHome.addEventListener('click', () => showSection(homeSection));
+        navClassify.addEventListener('click', () => showSection(classifySection));
+        navLocations.addEventListener('click', () => {
+            showSection(locationsSection);
+            loadRecyclingLocations();
+        });
+        navEducation.addEventListener('click', () => {
+            showSection(educationSection);
+            loadEducationGuides();
+        });
+        navLogout.addEventListener('click', logoutUser);
+
+        exploreClassifyButton.addEventListener('click', () => {
+            showSection(classifySection);
+            navClassify.classList.add('active');
+        });
+
+        // Modal events
+        closeButton.addEventListener('click', closeModal);
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Classify Form Submission
+        classifyForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const deviceType = deviceTypeSelect.value;
+            const deviceCondition = deviceConditionSelect.value;
+
+            // First check if fields are selected
+            if (!deviceType || !deviceCondition) {
+                showMessage(classifyMessage, 'Please select both device type and condition', 'error');
+                return;
+            }
+
+            classificationResultDiv.classList.add('hidden');
+            classifyMessage.textContent = '';
+
+            try {
+                const response = await fetchWithAuth(`${API_BASE_URL}/classify`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ deviceType, deviceCondition })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Classification failed');
+                }
+
+                const data = await response.json();
+                
+                resultDevice.textContent = `Device: ${data.deviceType}`;
+                resultCondition.textContent = `Condition: ${data.deviceCondition}`;
+                resultMessage.textContent = data.message || 'Here is our recommendation:';
+                resultRecommendation.textContent = data.recommendation || 'Please consult a professional recycler';
+                
+                classificationResultDiv.classList.remove('hidden');
+                showMessage(classifyMessage, 'Classification successful!', 'success');
+                
+            } catch (error) {
+                console.error('Classification error:', error);
+                showMessage(classifyMessage, error.message || 'Failed to classify. Please try again.', 'error');
+            }
+        });
+
+        // Load Recycling Locations
+        async function loadRecyclingLocations(deviceType = 'All') {
+            locationsList.innerHTML = '<p>Loading recycling locations...</p>';
+            locationsMessage.textContent = '';
+            try {
+                const response = await fetchWithAuth(`${API_BASE_URL}/recycling_locations?device_type=${deviceType}`);
+                const locations = await response.json();
+
+                if (response.ok) {
+                    if (locations.length === 0) {
+                        locationsList.innerHTML = '<p>No recycling locations found for the selected type.</p>';
+                        return;
+                    }
+
+                    locationsList.innerHTML = '';
+                    locations.forEach(location => {
+                        const card = document.createElement('div');
+                        card.classList.add('card', 'clickable-card');
+                        card.innerHTML = `
+                            <h3>${location.name}</h3>
+                            <p><strong>Address:</strong> ${location.address}</p>
+                            <p><strong>Contact:</strong> ${location.contact}</p>
+                            <p><strong>Hours:</strong> ${location.hours}</p>
+                            <p><strong>Accepts:</strong> ${location.acceptedTypes.join(', ')}</p>
+                        `;
+                        locationsList.appendChild(card);
+                    });
+                } else {
+                    locationsList.innerHTML = '<p>Failed to load locations.</p>';
+                    showMessage(locationsMessage, locations.message, 'error');
+                }
+            } catch (error) {
+                console.error('Failed to fetch recycling locations:', error);
+                locationsList.innerHTML = '<p>Error loading locations. Please try again later.</p>';
+                if (!locationsMessage.textContent) {
+                    showMessage(locationsMessage, 'Failed to load locations due to network error.', 'error');
+                }
+            }
+        }
+
+        applyLocationFilter.addEventListener('click', () => {
+            const selectedDeviceType = locationFilterDevice.value;
+            loadRecyclingLocations(selectedDeviceType);
+        });
+
+        // Load Education Guides
+        async function loadEducationGuides() {
+            educationGuidesList.innerHTML = '<p>Loading education guides...</p>';
+            educationMessage.textContent = '';
+            try {
+                const response = await fetchWithAuth(`${API_BASE_URL}/education/guides`);
+                const guides = await response.json();
+
+                if (response.ok) {
+                    if (guides.length === 0) {
+                        educationGuidesList.innerHTML = '<p>No education guides available.</p>';
+                        return;
+                    }
+
+                    educationGuidesList.innerHTML = '';
+                    guides.forEach(guide => {
+                        const card = document.createElement('div');
+                        card.classList.add('card', 'clickable-card', 'education-card');
+                        card.innerHTML = `
+                            <div class="card-inner">
+                                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/838fcf5a-296f-465f-a384-68e58e60f5e4.png" 
+                                     alt="${guide.title}" 
+                                     class="card-image">
+                                <h3>${guide.title}</h3>
+                                <p class="card-description">${guide.description}</p>
+                                <div class="card-footer">
+                                    <span class="read-more">Click to read more →</span>
+                                </div>
+                            </div>
+                        `;
+                        
+                        // Add click handler for opening modal
+                        card.addEventListener('click', () => {
+                            openModal(
+                                guide.title,
+                                guide.imageUrl,
+                                guide.description,
+                                guide.full_content
+                            );
+                        });
+                        educationGuidesList.appendChild(card);
+                    });
+                } else {
+                    educationGuidesList.innerHTML = '<p>Failed to load education guides.</p>';
+                    showMessage(educationMessage, guides.message, 'error');
+                }
+            } catch (error) {
+                console.error('Failed to fetch education guides:', error);
+                educationGuidesList.innerHTML = '<p>Error loading guides. Please try again later.</p>';
+                if (!educationMessage.textContent) {
+                    showMessage(educationMessage, 'Failed to load guides due to network error.', 'error');
+                }
+            }
+        }
+
+        // --- Initial Load ---
+        document.addEventListener('DOMContentLoaded', updateAuthUI);
+    </script>
+</body>
+</html>
